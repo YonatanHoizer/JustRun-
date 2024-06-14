@@ -1,4 +1,4 @@
-package src.Game.Backend;
+package Game.Backend;
 
 import src.Game.Frontend.states.EditorScene;
 import src.Game.Utils.MoseHandler;
