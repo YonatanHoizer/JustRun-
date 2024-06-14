@@ -1,7 +1,6 @@
-package src.Game.Backend;
+package Game.Backend;
 
-import com.sun.security.jgss.GSSUtil;
-import src.Game.Utils.MoseHandler;
+import Game.Utils.MoseHandler;
 
 import java.awt.event.MouseEvent;
 
@@ -14,16 +13,31 @@ public class CameraControls {
         this.camera = camera;
     }
 
-    public void update() {
-        if(mouse.pressed && mouse.button == MouseEvent.BUTTON1 && mouse.isDragging()) {
-            float dx = mouse.x + mouse.dx - prevMx;
-            float dy = mouse.y + mouse.dy - prevMy;
+    public CameraControls(Camera camera) {
+        this.camera = camera;
+    }
 
-            camera.position.x -= dx;
-            camera.position.y -= dy;
+    public void update() {
+        if(mouse != null) {
+            if (mouse.pressed && mouse.button == MouseEvent.BUTTON1 && mouse.isDragging()) {
+                float dx = mouse.x + mouse.dx - prevMx;
+                float dy = mouse.y + mouse.dy - prevMy;
+
+                camera.position.x -= dx;
+                camera.position.y -= dy;
+            }
+            prevMx = mouse.x + mouse.dx;
+            prevMy = mouse.y + mouse.dy;
         }
-        prevMx = mouse.x + mouse.dx;
-        prevMy = mouse.y + mouse.dy;
+        else {
+            camera.position.x -= 5;
+            camera.position.y -= 5;
+
+            prevMx = 5;
+            prevMy = 5;
+
+        }
+
     }
 
 }

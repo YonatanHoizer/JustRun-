@@ -1,14 +1,13 @@
-package src.Game.ui;
+package Game.ui;
 
-import src.Game.Backend.BoardMap;
-import src.Game.Backend.Camera;
-import src.Game.Utils.Constans;
-import src.Game.Utils.MoseHandler;
-import src.Game.Utils.Vector2f;
+import Game.Backend.BoardMap;
+import Game.Backend.Camera;
+import Game.Utils.Constans;
+import Game.Utils.MoseHandler;
+import Game.Utils.Vector2f;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class ImageHolder extends JPanel {
 

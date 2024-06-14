@@ -1,55 +1,63 @@
-package src.Game.Frontend;
+package Game.Frontend;
 
-import src.Game.Backend.Camera;
-import src.Game.Utils.Constans;
-import src.Game.Utils.KeyHandler;
-import src.Game.Utils.MoseHandler;
-import src.Game.Utils.Vector2f;
-import src.Game.Frontend.states.*;
+import Game.Backend.Camera;
+import Game.Utils.Constans;
+import Game.Utils.KeyHandler;
+import Game.Utils.MoseHandler;
+import Game.Utils.Vector2f;
+import Game.Frontend.states.*;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
-public class MainWindow extends JPanel implements Runnable{
+public class MainWindow implements Runnable {
     private Scene panel;
     private JFrame frame;
-    private KeyHandler key;
-    private MoseHandler mouse;
+    private final KeyHandler key;
+    private final MoseHandler mouse;
     private boolean gameLoopIsRunning;
+    private int currentScene;
+    private BufferedImage image = new BufferedImage(Constans.WINDOW_WIDTH, Constans.WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
     public MainWindow() {
         key = new KeyHandler();
         mouse = new MoseHandler();
         gameLoopIsRunning = true;
-
-        changeState(0);
-
-
+        // Changing the states
         setUpWindow();
+        currentScene = - 1;
+        changeState(1);
+
+        frame.setVisible(true);
     }
 
     private void changeState(int state) {
-        switch (state) {
-            case 0:
-                panel = new EditorScene(new Camera(new Vector2f()),  mouse);
-                break;
-            case 1:
-                panel = new MenuScene(new Camera(new Vector2f()), mouse);
-                break;
-            case 2:
-                panel = new PlayScene(new Camera(new Vector2f()));
-                break;
+        if (currentScene != state) {
+            this.currentScene = state;
+            switch (currentScene) {
+                case 0:
+                    panel = new EditorScene(new Camera(new Vector2f()), mouse);
+                    frame.getContentPane().removeAll();
+                    break;
+                case 1:
+                    panel = new MenuScene(new Camera(new Vector2f()), mouse);
+                    frame.getContentPane().removeAll();
+                    break;
+                case 2:
+                    panel = new PlayScene(new Camera(new Vector2f()));
+                    frame.getContentPane().removeAll();
+                    break;
+                default:
+                    System.out.println("Unknown state: " + state);
+                    return;
+            }
+            frame.add(panel);
         }
     }
 
     private void setUpWindow() {
-        showWindow();
-    }
-
-    private void showWindow() {
-        JFrame frame = new JFrame();
-        frame.setTitle("Hide and Seek");
+        frame = new JFrame(); // Use the class field
+        frame.setTitle("Just-Run-");
         frame.setSize(Constans.WINDOW_WIDTH, Constans.WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
@@ -58,34 +66,40 @@ public class MainWindow extends JPanel implements Runnable{
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
         frame.setFocusable(true);
-
-        frame.add(panel);
-        frame.setVisible(true);
-
-        this.frame = frame;
     }
 
     @Override
     public void run() {
-        while(gameLoopIsRunning) {
+        long lastTime = System.nanoTime();
+        long timer = System.currentTimeMillis();
+        final double ns = 1000000000.0 / 60.0;
+        double delta = 0;
+        int frames = 0;
+        int updates = 0;
+        while (gameLoopIsRunning) {
+            long now = System.nanoTime();
+            delta += (now - lastTime) / ns;
+            lastTime = now;
+            while (delta >= 1) {
+                update();
+                updates++;
+                delta--;
+            }
+            frames++;
 
-            update();
-
-            render();
+            if(System.currentTimeMillis() - timer > 1000) {
+                timer += 1000;
+                updates = 0;
+                frames = 0;
+            }
 
         }
     }
 
     private void update() {
-
-    }
-
-    private void render() {
-        BufferStrategy bs = frame.getBufferStrategy();
-        if(bs == null) {
-            frame.createBufferStrategy(3);
-            return;
-        }
+        changeState(panel.getScene()); // Use the current scene directly
+        frame.revalidate();
+        frame.repaint();
     }
 
 

@@ -1,8 +1,7 @@
-package src.Game.Frontend.states;
+package Game.Frontend.states;
 
-import src.Game.Backend.BoardMap;
-import src.Game.Backend.Camera;
-import src.Game.Utils.MoseHandler;
+import Game.Backend.BoardMap;
+import Game.Backend.Camera;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +14,7 @@ public abstract class Scene extends JPanel {
 
     protected Scene(Camera camera) {
         this.camera = camera;
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.BLACK);
         //manager = new GameSceneManager(new MoseHandler());
 
 
@@ -30,5 +29,9 @@ public abstract class Scene extends JPanel {
        // manager.renderState(g);
         //repaint();
     }
+
+    public abstract void scene_type(int scene);
+
+    public abstract int getScene();
 
 }

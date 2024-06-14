@@ -1,18 +1,21 @@
-package src.Game.Frontend.states;
+package Game.Frontend.states;
 
-import src.Game.Utils.MoseHandler;
+import Game.Utils.MoseHandler;
 
 import java.awt.*;
 
 public class GameSceneManager {
+    private Scene gameScene;
+    private MoseHandler mouse;
 
-    public GameSceneManager(MoseHandler mouse) {
-
+    public GameSceneManager(Scene scene, MoseHandler mouse) {
+        this.gameScene = scene;
+        this.mouse = mouse;
     }
 
 
     public void renderScene(Graphics g) {
-
+        this.gameScene.paintComponent(g);
     }
 
 

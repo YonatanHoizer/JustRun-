@@ -1,4 +1,4 @@
-package src.Game.Utils;
+package Game.Utils;
 
 public class Vector2f {
     public float x, y;

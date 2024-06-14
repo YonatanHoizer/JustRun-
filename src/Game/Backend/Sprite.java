@@ -1,12 +1,8 @@
-package src.Game.Backend;
+package Game.Backend;
 
-
-import src.Game.Utils.Constans;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class Sprite {

@@ -1,22 +1,25 @@
-package src.Game.Frontend.states;
+package Game.Frontend.states;
 
-import src.Game.Backend.Camera;
-import src.Game.Utils.Constans;
-import src.Game.Utils.MoseHandler;
+import Game.Backend.Camera;
+import Game.Utils.Constans;
+import Game.Utils.MoseHandler;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MenuScene extends Scene {
     private MoseHandler mouse;
+    private int scene;
 
     private JLabel label;
     private JButton button;
     private JButton buttonStartGame;
+    private JLabel logo;
+   private Animation animation;
     public MenuScene(Camera camera, MoseHandler mouse) {
         super(camera);
         this.mouse = mouse;
-        System.out.println("Inside Menu");
+
         setUpMenu();
     }
 
@@ -26,18 +29,36 @@ public class MenuScene extends Scene {
         button = createRulesButton();
         label = createLabel();
         buttonStartGame = createStartButton();
+        logo = createLogo();
+        animation = new Animation();
         this.add(label);
         this.add(button);
+        this.add(logo);
         this.add(buttonStartGame);
-        this.setBackground(Color.ORANGE);
+        this.setBackground(Color.BLACK);
         this.setFocusable(true);
 
+        this.scene = 1;
+        animation.startAnimation();
+
+    }
+
+    private JLabel createLogo() {
+        JLabel logo = new JLabel();
+        ImageIcon icon = new ImageIcon("Logo.jpg");
+        logo.setIcon(icon);
+        logo.setBounds(Constans.WINDOW_WIDTH / 2 - 400/2, 50, 400, 200);
+
+        logo.setVisible(true);
+        return logo;
     }
 
     private JButton createStartButton() {
         JButton start = new JButton("Start");
-        start.setBounds(Constans.WINDOW_WIDTH /2 - 50/2,Constans.WINDOW_HEIGHT - 2*50, 100, 50);
+        start.setBounds(Constans.WINDOW_WIDTH /2 - 200/2,300, 200, 50);
         start.setFocusable(false);
+        start.setBackground(Color.BLACK);
+        start.setForeground(Color.BLUE);
         start.addActionListener((e) -> this.button.setVisible(!this.button.isVisible()));
         start.addActionListener((e) -> {
             this.buttonStartGame.setVisible(false);
@@ -49,18 +70,22 @@ public class MenuScene extends Scene {
 
 
     private void startGame() {
-        // TODO: remove this
-        //ground = new BoardMap("res/zombie_streets-tiles.jpg");
+       this.scene = 2;
 
         repaint();
     }
     private JButton createRulesButton() {
         JButton button = new JButton();
         button.setText("?");
-        button.setBounds(30, Constans.WINDOW_HEIGHT - 2*50, 70, 50);
+        button.setBackground(Color.BLACK);
+        button.setForeground(Color.BLUE);
+        button.setBounds(Constans.WINDOW_WIDTH /2 - 200/2,  400, 200, 50);
         button.setFocusable(false);
         button.addActionListener((e) -> label.setVisible(!label.isVisible()));
-        button.addActionListener((e) -> this.buttonStartGame.setVisible(!this.buttonStartGame.isVisible()));
+        button.addActionListener((e) -> {
+            this.buttonStartGame.setVisible(!this.buttonStartGame.isVisible());
+            this.logo.setVisible(!this.logo.isVisible());
+        });
         button.setVisible(true);
         return button;
     }
@@ -77,10 +102,11 @@ public class MenuScene extends Scene {
         JLabel label = new JLabel();
         Font font = new Font("MV Boli", Font.PLAIN, 20);
         label.setText(rules());
-        label.setBounds(150, 50, 600, 300);
-        label.setAlignmentX(100);
-        label.setHorizontalTextPosition(JLabel.CENTER);
-        label.setVerticalAlignment(JLabel.CENTER);
+        label.setBounds(Constans.WINDOW_WIDTH/2 - 400/2, 50, 600, 300);
+        label.setForeground(Color.CYAN);
+
+        //label.setHorizontalTextPosition(JLabel.CENTER);
+        //label.setVerticalAlignment(JLabel.CENTER);
         label.setFont(font);
         label.setVisible(false);
         return label;
@@ -90,6 +116,18 @@ public class MenuScene extends Scene {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        animation.draw(g);
 
+        repaint();
+    }
+
+    @Override
+    public void scene_type(int scene) {
+        this.scene = scene;
+    }
+
+    public int getScene() {
+      //  System.out.println("GetMenuScene " + scene);
+        return  scene;
     }
 }

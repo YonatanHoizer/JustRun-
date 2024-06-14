@@ -1,13 +1,15 @@
-package src.Game.Backend;
+package Game.Backend;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TileManager {
-    private Tile WALL, FLOOR, FOOD;
-    private BufferedImage image;
+//    private Tile WALL, FLOOR, FOOD;
+//    private Tile M_Road;
+    private BufferedImage[] images;
     private ArrayList<Tile> tiles = new ArrayList<>();
 
 
@@ -17,12 +19,22 @@ public class TileManager {
     }
 
     private void loadImage() {
+        images = new BufferedImage[8];
         try {
-            image = ImageIO.read(getClass().getResource("res/zombie_streets-tiles.jpg"));
-            int imageWidth = image.getWidth();
-            System.out.println("Width: " + imageWidth/6);
-            int imageHeight = image.getHeight();
-            System.out.println("Height: " + imageHeight/4);
+            // 0 1 6 10, 11 9 7 12
+
+            images[0] = ImageIO.read(Objects.requireNonNull(getClass().getResource("res/An_road.jpg")));
+            images[1] = ImageIO.read(Objects.requireNonNull(getClass().getResource("res/F_road.jpg")));
+            images[4] = ImageIO.read(Objects.requireNonNull(getClass().getResource("res/BC_road.jpg")));
+            images[5] = ImageIO.read(Objects.requireNonNull(getClass().getResource("res/RC_road.jpg")));
+            images[6] = ImageIO.read(Objects.requireNonNull(getClass().getResource("res/LC_road.jpg")));
+            images[2] = ImageIO.read(Objects.requireNonNull(getClass().getResource("res/RR_road.jpg")));
+
+            images[3] = ImageIO.read(Objects.requireNonNull(getClass().getResource("res/N_road.jpg")));
+            images[7] = ImageIO.read(Objects.requireNonNull(getClass().getResource("res/WW_road.jpg")));
+
+
+
         }catch (IOException e) { e.printStackTrace(); }
     }
 
@@ -30,16 +42,9 @@ public class TileManager {
         return tiles.get(id).getSprite();
     }
     private void createTile() {
-        WALL = new Tile(getSubImage(2, 1));
-        FLOOR = new Tile(getSubImage(1, 3));
-        FOOD = new Tile(getSubImage(0,0) );
-        tiles.add(WALL);
-        tiles.add(FLOOR);
-        tiles.add(FOOD);
-    }
-
-    private BufferedImage getSubImage(int x, int y) {
-        return this.image.getSubimage(x * 130, y * 143, 120, 143);
+        for(BufferedImage b : images) {
+            tiles.add(new Tile(b));
+        }
     }
 
 }

@@ -1,8 +1,8 @@
 package Game.Backend;
 
-import src.Game.Frontend.states.EditorScene;
-import src.Game.Utils.MoseHandler;
-import src.Game.Utils.Vector2f;
+import Game.Frontend.states.EditorScene;
+import Game.Utils.MoseHandler;
+import Game.Utils.Vector2f;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

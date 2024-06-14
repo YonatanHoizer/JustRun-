@@ -1,6 +1,6 @@
-package src.Game;
+package Game;
 
-import src.Game.Frontend.MainWindow;
+import Game.Frontend.MainWindow;
 
 public class Main {
     public static void main(String[] args) {

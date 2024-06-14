@@ -1,9 +1,9 @@
-package src.Game.Backend.Players;
+package Game.Backend.Players;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import src.Game.Backend.Sprite;
-import src.Game.Utils.Vector2f;
+import Game.Backend.Sprite;
+import Game.Utils.Vector2f;
 
 public class Player {
     private Sprite spriteSheet;

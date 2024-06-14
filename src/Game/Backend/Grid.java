@@ -1,8 +1,7 @@
-package src.Game.Backend;
+package Game.Backend;
 
-import src.Game.Utils.Constans;
-import src.Game.Utils.MoseHandler;
-import src.Game.Utils.Vector2f;
+import Game.Utils.Constans;
+import Game.Utils.MoseHandler;
 
 import java.awt.*;
 

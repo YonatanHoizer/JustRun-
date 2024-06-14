@@ -1,4 +1,4 @@
-package src.Game.Utils;
+package Game.Utils;
 
 public class Constans {
     public static final int WINDOW_HEIGHT = 720;

@@ -1,6 +1,6 @@
-package src.Game.Backend;
+package Game.Backend;
 
-import src.Game.Utils.Vector2f;
+import Game.Utils.Vector2f;
 
 public class Camera {
     public Vector2f position;

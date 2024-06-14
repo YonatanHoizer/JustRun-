@@ -1,4 +1,4 @@
-package src.Game.Backend;
+package Game.Backend;
 
 import java.awt.image.BufferedImage;
 
