@@ -18,7 +18,7 @@ public class Animation implements ActionListener {
     public Animation() {
 
 
-        timer = new Timer(100, this); // Интервал таймера
+        timer = new Timer(100, this);
         bloodDrops = new ArrayList<>();
         random = new Random();
     }
@@ -26,14 +26,11 @@ public class Animation implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Создаем новую каплю крови и добавляем ее в список
         BloodDrop newDrop = new BloodDrop(random.nextInt(Constans.WINDOW_WIDTH), 0);
         bloodDrops.add(newDrop);
 
-        // Удаляем капли крови, которые вышли за пределы экрана
         bloodDrops.removeIf(drop -> drop.getY() > Constans.WINDOW_HEIGHT);
 
-        // Обновляем положение капель крови
         for (BloodDrop drop : bloodDrops) {
             drop.update();
         }
@@ -47,7 +44,6 @@ public class Animation implements ActionListener {
 
     }
 
-    // Класс для представления капли крови
     private class BloodDrop {
         private int x;
         private int y;
@@ -64,16 +60,16 @@ public class Animation implements ActionListener {
         }
 
         public void update() {
-            y += speed; // Обновляем положение капли
+            y += speed; жение капли
         }
 
         public void draw(Graphics g) {
-            g.setColor(Color.RED); // Цвет крови
-            g.fillOval(x, y, 5, 5); // Рисуем каплю крови
+            g.setColor(Color.RED);
+            g.fillOval(x, y, 5, 5);  �
         }
     }
 
     public void startAnimation() {
-        timer.start(); // Запускаем таймер
+        timer.start();
     }
 }
