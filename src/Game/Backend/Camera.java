@@ -1,11 +1,32 @@
-package Game.Backend;
+class camera {
+    public int offsetX = 400;
+    public int offsetY = 400;
+    private character character;
 
-import Game.Utils.Vector2f;
+    public camera(character c) {
+        this.character = c;
+    }
 
-public class Camera {
-    public Vector2f position;
+    public void update() {
+        if (character.isMovingL) {
+            offsetX += 10;
+        }
+        if (character.isMovingR) {
+            offsetX -= 10;
+        }
+        if (character.isMovingU) {
+            offsetY += 10;
+        }
+        if (character.isMovingD) {
+            offsetY -= 10;
+        }
+    }
 
-    public Camera(Vector2f position) {
-        this.position = position;
+    public int getCameraX(int worldX) {
+        return worldX + offsetX;
+    }
+
+    public int getCameraY(int worldY) {
+        return worldY + offsetY;
     }
 }
