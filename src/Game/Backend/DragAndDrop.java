@@ -13,7 +13,7 @@ public class DragAndDrop {
     private Camera camera;
     private EditorScene scene;
     private boolean dragging;
-    private float debounceTime = 2.0f;
+    private final float debounceTime = 2.0f;
     private float debounceLeft = 0.0f;
 
     public DragAndDrop(BoardMap image, MoseHandler mouse, Camera camera, EditorScene scene) {

@@ -97,7 +97,7 @@ public class Character {
         for (int i = 0; i < 500; ++i) {
             int x, y;
             do {
-                x = random.nextInt(mapHeightInPixels);
+                x = random.nextInt(mapWidthInPixels);
                 y = random.nextInt(mapHeightInPixels);
             } while (isCollidingWithWalls(x, y, levelMap));
 
@@ -140,8 +140,8 @@ public class Character {
 
     public void moveLeft(int[][] levelMap) {
 
-        if (!isCollidingWithWalls(x - 4, y, levelMap)) {
-            x -= 4;
+        if (!isCollidingWithWalls(x - SPEED, y, levelMap)) {
+            x -= SPEED;
             direction = Direction.LEFT;
         }
 

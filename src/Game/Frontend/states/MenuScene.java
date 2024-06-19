@@ -16,6 +16,8 @@ public class MenuScene extends Scene {
     private JButton buttonStartGame;
     private JLabel logo;
     private Animation animation;
+    private JLabel infoScoreLabel;
+    private JLabel infoLevelLabel;
 
     public MenuScene(Camera camera, MoseHandler mouse) {
         super(camera);
@@ -30,7 +32,12 @@ public class MenuScene extends Scene {
         label = createLabel();
         buttonStartGame = createStartButton();
         logo = createLogo();
+
+        infoScoreLabel = createInfoLabel(getScoreText(), 100, 100);
+        infoLevelLabel = createInfoLabel(getLevelText(), Constans.WINDOW_WIDTH/2 + 400, 100);
         animation = new Animation();
+        this.add(infoScoreLabel);
+        this.add(infoLevelLabel);
         this.add(label);
         this.add(button);
         this.add(logo);
@@ -51,15 +58,30 @@ public class MenuScene extends Scene {
         return logo;
     }
 
+    private JLabel createInfoLabel(String text, int x, int y) {
+        if(PlayScene.getInfo() == null) return new JLabel();
+
+        JLabel info = new JLabel();
+        Font font = new Font("MV Boli", Font.PLAIN, 20);
+        info.setText(text);
+        info.setBounds(x ,y, 500, 50);
+        info.setForeground(Color.RED);
+        info.setFont(font);
+        info.setVisible(true);
+        return info;
+    }
+
     private JButton createStartButton() {
         JButton start = new JButton("Start");
         start.setBounds(Constans.WINDOW_WIDTH / 2 - 200 / 2, 300, 200, 50);
         start.setFocusable(false);
         start.setBackground(Color.BLACK);
         start.setForeground(Color.BLUE);
-        start.addActionListener((e) -> this.button.setVisible(!this.button.isVisible()));
         start.addActionListener((e) -> {
+            this.button.setVisible(!this.button.isVisible());
             this.buttonStartGame.setVisible(false);
+            this.infoScoreLabel.setVisible(!infoScoreLabel.isVisible());
+            this.infoLevelLabel.setVisible(!infoLevelLabel.isVisible());
             startGame();
         });
         start.setVisible(true);
@@ -120,6 +142,18 @@ public class MenuScene extends Scene {
     @Override
     public void scene_type(int scene) {
         this.scene = scene;
+    }
+
+    private String getScoreText() {
+        if(PlayScene.getInfo() == null) return null;
+
+        return PlayScene.getInfo().toString().substring(0, 11);
+    }
+
+    private String getLevelText() {
+        if(PlayScene.getInfo() == null) return null;
+
+        return PlayScene.getInfo().toString().substring(11);
     }
 
     public int getScene() {

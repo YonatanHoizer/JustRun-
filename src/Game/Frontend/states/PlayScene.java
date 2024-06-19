@@ -2,6 +2,7 @@ package Game.Frontend.states;
 
 import Game.Backend.Camera;
 import Game.Backend.CameraControls;
+import Game.Backend.PInfo;
 import Game.Backend.TileManager;
 import Game.Backend.Players.Character;
 import Game.Utils.Constans;
@@ -22,7 +23,8 @@ public class PlayScene extends Scene {
     private TileManager tileManager;
     private CameraControls cameraControls;
     private KeyHandler key;
-
+    private static int level = 1;
+    private static PInfo info;
     public PlayScene(Camera camera, KeyHandler key) {
         super(camera);
         this.key = key;
@@ -32,6 +34,7 @@ public class PlayScene extends Scene {
         character = new Character(Constans.WINDOW_WIDTH / 2, Constans.WINDOW_HEIGHT / 2, levelMap);
         this.camera = camera;
         cameraControls = new CameraControls(camera, character);
+        info = new PInfo(character.getScore(), level);
         this.setFocusable(true);
         this.requestFocus();
         tileManager = new TileManager();
@@ -39,6 +42,8 @@ public class PlayScene extends Scene {
     }
 
     private void processKey() {
+        System.out.println(character.getScore());
+        info.setScore(character.getScore());
         if (key.isKeyPressed(KeyEvent.VK_UP)) {
             character.moveUp(levelMap);
         } else if (key.isKeyPressed(KeyEvent.VK_DOWN)) {
@@ -48,16 +53,19 @@ public class PlayScene extends Scene {
         } else if (key.isKeyPressed(KeyEvent.VK_RIGHT)) {
             character.moveRight(levelMap);
         }
+
     }
 
     @Override
     public void update() {
-        processKey();
+        info.setScore(character.getScore());
+        System.out.println(character.getScore());
         cameraControls.update(levelMap[0].length, levelMap.length);
         if(character.AABB(character.getX(), character.getY())){
             JOptionPane.showMessageDialog(null, "You Lose", "", JOptionPane.ERROR_MESSAGE);
             this.scene = 1;
         }
+        processKey();
     }
 
     @Override
@@ -119,4 +127,9 @@ public class PlayScene extends Scene {
         int[] weightedValues = {3, 3, 3, 3, 3, 7};
         return weightedValues[new Random().nextInt(weightedValues.length)];
     }
+
+    public static PInfo getInfo() {
+        return info;
+    }
+
 }

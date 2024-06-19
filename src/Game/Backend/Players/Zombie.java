@@ -111,9 +111,9 @@ public class Zombie {
     }
 
     public boolean catch_p(int charX, int charY, int charSize) {
-        return charX < x + ZOMBIE_SIZE &&
-                charX + charSize > x &&
-                charY < y + ZOMBIE_SIZE &&
-                charY + charSize > y;
+        return charX < x + ZOMBIE_SIZE-30 &&
+                charX + charSize - 30 > x &&
+                charY < y + ZOMBIE_SIZE-30 &&
+                charY + charSize - 30 > y;
     }
 }
