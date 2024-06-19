@@ -11,6 +11,7 @@ import java.util.Random;
 
 public class Zombie {
     private int x, y;
+    private  int SPEED = 3;
     private BufferedImage currentImage;
     private int imageIndex = 0;
     private BufferedImage[] rightImagesZ, leftImagesZ, downImagesZ, upImagesZ;
@@ -69,37 +70,33 @@ public class Zombie {
         int targetX = character.getX();
         int targetY = character.getY();
 
-        if (x >= targetX) {
-            x -= 4;
+        if (x > targetX) {
+            x -= SPEED;
             direction = Direction.LEFT;
         } else {
-            x += 4;
+            x += SPEED;
             direction = Direction.RIGHT;
         }
 
         if (y >= targetY) {
-            y -= 4;
+            y -= SPEED;
             direction = Direction.UP;
         } else {
-            y += 4;
+            y += SPEED;
             direction = Direction.DOWN;
         }
     }
 
+    public void setSpeed(int speed) {
+        this.SPEED += speed;
+    }
+
     private void updateImage() {
         switch (direction) {
-            case RIGHT:
-                currentImage = rightImagesZ[imageIndex];
-                break;
-            case LEFT:
-                currentImage = leftImagesZ[imageIndex];
-                break;
-            case UP:
-                currentImage = upImagesZ[imageIndex];
-                break;
-            case DOWN:
-                currentImage = downImagesZ[imageIndex];
-                break;
+            case RIGHT -> currentImage = rightImagesZ[imageIndex];
+            case LEFT -> currentImage = leftImagesZ[imageIndex];
+            case UP -> currentImage = upImagesZ[imageIndex];
+            case DOWN -> currentImage = downImagesZ[imageIndex];
         }
         imageIndex = (imageIndex + 1) % 4;
     }
@@ -111,9 +108,9 @@ public class Zombie {
     }
 
     public boolean catch_p(int charX, int charY, int charSize) {
-        return charX < x + ZOMBIE_SIZE-30 &&
-                charX + charSize - 30 > x &&
-                charY < y + ZOMBIE_SIZE-30 &&
-                charY + charSize - 30 > y;
+        return charX < x + ZOMBIE_SIZE-25 &&
+                charX + charSize - 25 > x &&
+                charY < y + ZOMBIE_SIZE-25 &&
+                charY + charSize - 25 > y;
     }
 }

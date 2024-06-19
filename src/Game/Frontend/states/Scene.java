@@ -28,7 +28,6 @@ public abstract class Scene extends JPanel {
 
     public void paintComponent(Graphics g) {}
 
-    public abstract void scene_type(int scene);
 
     public abstract int getScene();
 

@@ -16,6 +16,6 @@ public class PInfo {
 
     @Override
     public String toString() {
-        return "score:  " + score + " " + "level " + level;
+        return "score:  " + score + " level: " + level;
     }
 }

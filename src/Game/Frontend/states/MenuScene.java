@@ -110,10 +110,10 @@ public class MenuScene extends Scene {
     }
 
     private String rules() {
-        return "<html><center>Hi it is game Hide and Seek!<br/>" +
-                "rules are very simple:<br/>" + "you have two players<br/>" +
-                " player that write above his head <b>Hide</b><br/> need to hide he has" +
-                " 10 sec. to hide <br/>another player have to find him to win!<br/><br/>" +
+        return "<html><center>Hi it is game Just-Run!<br/>" +
+                "rules are very simple:<br/>" + "you have player and zombie<br/>" +
+                " you need to <b>Just-Run</b><br/> and you can collect<br/>" +
+                " some coins to win you need<b> 60 </b>coins!<br/><br/>" +
                 " Good Luck!</center></html>";
     }
 
@@ -139,21 +139,16 @@ public class MenuScene extends Scene {
         paintComponents(g);
     }
 
-    @Override
-    public void scene_type(int scene) {
-        this.scene = scene;
-    }
-
     private String getScoreText() {
         if(PlayScene.getInfo() == null) return null;
 
-        return PlayScene.getInfo().toString().substring(0, 11);
+        return PlayScene.getInfo().toString().substring(0, 10);
     }
 
     private String getLevelText() {
         if(PlayScene.getInfo() == null) return null;
 
-        return PlayScene.getInfo().toString().substring(11);
+        return PlayScene.getInfo().toString().substring(10);
     }
 
     public int getScene() {

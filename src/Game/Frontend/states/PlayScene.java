@@ -10,6 +10,8 @@ import Game.Utils.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
@@ -23,15 +25,18 @@ public class PlayScene extends Scene {
     private TileManager tileManager;
     private CameraControls cameraControls;
     private KeyHandler key;
-    private static int level = 1;
+    private int level = 1;
     private static PInfo info;
+
+    private Timer timer;
+    private int remainingSeconds;
+
     public PlayScene(Camera camera, KeyHandler key) {
         super(camera);
         this.key = key;
 
-
         levelMap = buildLevel();
-        character = new Character(Constans.WINDOW_WIDTH / 2, Constans.WINDOW_HEIGHT / 2, levelMap);
+        character = new Character(random.nextInt(75, levelMap[0].length*70), random.nextInt(75, levelMap.length*70), levelMap);
         this.camera = camera;
         cameraControls = new CameraControls(camera, character);
         info = new PInfo(character.getScore(), level);
@@ -39,11 +44,26 @@ public class PlayScene extends Scene {
         this.requestFocus();
         tileManager = new TileManager();
         this.scene = 2;
+
+        remainingSeconds = 20;
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (remainingSeconds > 0) {
+                    remainingSeconds--;
+                } else {
+                    level+= 1;
+                    remainingSeconds = 20;
+                    character.setSpeed();
+                }
+            }
+        });
+        timer.start();
+
+        processKey();
     }
 
     private void processKey() {
-        System.out.println(character.getScore());
-        info.setScore(character.getScore());
         if (key.isKeyPressed(KeyEvent.VK_UP)) {
             character.moveUp(levelMap);
         } else if (key.isKeyPressed(KeyEvent.VK_DOWN)) {
@@ -53,16 +73,18 @@ public class PlayScene extends Scene {
         } else if (key.isKeyPressed(KeyEvent.VK_RIGHT)) {
             character.moveRight(levelMap);
         }
-
     }
 
     @Override
     public void update() {
         info.setScore(character.getScore());
-        System.out.println(character.getScore());
+        info.setLevel(level);
         cameraControls.update(levelMap[0].length, levelMap.length);
         if(character.AABB(character.getX(), character.getY())){
             JOptionPane.showMessageDialog(null, "You Lose", "", JOptionPane.ERROR_MESSAGE);
+            this.scene = 1;
+        } else if (character.getScore() == 60) {
+            JOptionPane.showMessageDialog(null, "You Win", "", JOptionPane.INFORMATION_MESSAGE);
             this.scene = 1;
         }
         processKey();
@@ -90,13 +112,12 @@ public class PlayScene extends Scene {
         }
 
         character.draw(g, camera);
-    }
 
-    @Override
-    public void scene_type(int scene) {
-        this.scene = scene;
+        // Draw the countdown timer
+        g.setColor(Color.RED);
+        g.setFont(new Font("MV Boli", Font.PLAIN, 40));
+        g.drawString("Level-Up: " + remainingSeconds, Constans.WINDOW_WIDTH/2 - 100/2, 70);
     }
-
     @Override
     public int getScene() {
         return scene;
@@ -131,5 +152,4 @@ public class PlayScene extends Scene {
     public static PInfo getInfo() {
         return info;
     }
-
 }

@@ -34,8 +34,12 @@ public class Character {
     private Random random = new Random();
     private final int[][] levelMap;
     private static final int SPEED = 5;
+    private int zSpeed = 3;
     private static final int CHARACTER_SIZE = 40;
-    private static int score = 0;
+    private static final int COINS_CAP = 100;
+    private static final int ZOMBIE_CAP = 70;
+    private int score = 0;
+    private boolean isMovingFaster = false;
 
     private enum Direction {
         RIGHT, LEFT, UP, DOWN
@@ -84,9 +88,9 @@ public class Character {
     }
 
     private void setupZombies() {
-        zombies = new Zombie[50];
+        zombies = new Zombie[ZOMBIE_CAP];
         for (int i = 0; i < zombies.length; ++i) {
-            zombies[i] = new Zombie(random.nextInt(0, 50 * 70), random.nextInt(0, 50 * 70), this);
+            zombies[i] = new Zombie(random.nextInt(0, levelMap[0].length * 70), random.nextInt(0, levelMap.length * 70), this);
         }
     }
 
@@ -94,7 +98,7 @@ public class Character {
         coins = new ArrayList<>();
         int mapWidthInPixels = levelMap[0].length * 70;
         int mapHeightInPixels = levelMap.length * 70;
-        for (int i = 0; i < 500; ++i) {
+        for (int i = 0; i < COINS_CAP; ++i) {
             int x, y;
             do {
                 x = random.nextInt(mapWidthInPixels);
@@ -173,12 +177,12 @@ public class Character {
         int tileX = newX / 70;
         int tileY = newY / 70;
 
-        // Check if the coordinates are within bounds of the map
+
         if (tileX < 0 || tileY < 0 || tileX >= levelMap[0].length || tileY >= levelMap.length) {
             return true;
         }
 
-        // Check for wall tiles
+
         return levelMap[tileY][tileX] == 1 || levelMap[tileY][tileX] == 2;
     }
 
@@ -191,38 +195,41 @@ public class Character {
     }
 
     public void draw(Graphics g, Camera camera) {
-    int collectRadius = 20;
+    int collectRadius = 40;
     int collectRadiusSquared = collectRadius * collectRadius;
 
-    // Iterate using Iterator for safe removal
+
     Iterator<Coin> iterator = coins.iterator();
     while(iterator.hasNext()) {
         Coin coin = iterator.next();
         int coinX = (int) coin.getPosition().x;
         int coinY = (int) coin.getPosition().y;
 
-        // Calculate squared distance
+
         double distanceSquared = Math.pow(x - coinX, 2) + Math.pow(y - coinY, 2);
 
 
 
-        // Compare squared distance with the squared collection radius
+
         if (distanceSquared <= collectRadiusSquared) {
-            // Remove the coin
             iterator.remove();
             score++;
         } else {
-            // Draw the coin
+
             coin.draw(g, camera);
         }
     }
-        // Correctly calculate drawX and drawY
+
         int drawX = x - (int) camera.position.x;
         int drawY = y - (int) camera.position.y;
         g.drawImage(currentImage, drawX, drawY, CHARACTER_SIZE, CHARACTER_SIZE, null);
 
         for (Zombie zombie : zombies) {
             zombie.draw(g, camera);
+            if(isMovingFaster) {
+                isMovingFaster = false;
+                zombies[random.nextInt(zombies.length)].setSpeed(zSpeed);
+            }
 
         }
     }
@@ -234,6 +241,10 @@ public class Character {
             }
         }
         return false;
+    }
+    public void setSpeed () {
+        isMovingFaster = true;
+        zSpeed++;
     }
 
     public void setY(int y) {

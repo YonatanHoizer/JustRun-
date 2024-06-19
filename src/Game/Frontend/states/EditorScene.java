@@ -2,6 +2,7 @@ package Game.Frontend.states;
 
 import Game.Backend.*;
 import Game.Backend.DragAndDrop;
+import Game.Utils.Constans;
 import Game.Utils.MoseHandler;
 import Game.ui.ImageHolder;
 
@@ -31,13 +32,13 @@ public class EditorScene extends Scene {
         this.mouse = mouse;
         this.camera = camera;
 
-        play_scene = new JButton();
-        play_scene.setBounds(20, 20, 70, 30);
-        play_scene.setText(" Start ");
-        play_scene.addActionListener((e) -> System.out.println("Hello"));
-        play_scene.setForeground(Color.BLUE);
+//        play_scene = new JButton();
+//        play_scene.setBounds(20, 20, 70, 30);
+//        play_scene.setText(" Start ");
+//        play_scene.addActionListener((e) -> System.out.println("Hello"));
+//        play_scene.setForeground(Color.BLUE);
 
-        add(play_scene);
+     //   add(play_scene);
         // maps = new ArrayList<>();
      //  holder = new ImageHolder(camera, mouse);
        // setLayout(new BorderLayout());
@@ -51,8 +52,7 @@ public class EditorScene extends Scene {
         tileManager = new TileManager();
         ints_map = buildLevel();
 
-
-        scene_type(0);
+        this.scene = 0;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class EditorScene extends Scene {
 
     @Override
     public void render(Graphics g) {
-
+        g.drawRect(0,0, Constans.WINDOW_WIDTH, Constans.WINDOW_HEIGHT);
     }
 
     @Override
@@ -107,10 +107,6 @@ public class EditorScene extends Scene {
         repaint();
     }
 
-    @Override
-    public void scene_type(int scene) {
-        this.scene = scene;
-    }
 
 
     // second option to build editor scene
