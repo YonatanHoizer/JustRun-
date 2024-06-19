@@ -29,7 +29,7 @@ public class Character {
     private int imageIndex = 0;
     private Direction direction = Direction.RIGHT;
     private Timer timer;
-    private Zombie[] zombies;
+    private  List<Zombie> zombies;
     private List<Coin> coins;
     private Random random = new Random();
     private final int[][] levelMap;
@@ -88,9 +88,9 @@ public class Character {
     }
 
     private void setupZombies() {
-        zombies = new Zombie[ZOMBIE_CAP];
-        for (int i = 0; i < zombies.length; ++i) {
-            zombies[i] = new Zombie(random.nextInt(0, levelMap[0].length * 70), random.nextInt(0, levelMap.length * 70), this);
+        zombies = new ArrayList<>();
+        for (int i = 0; i < ZOMBIE_CAP; ++i) {
+            zombies.add(new Zombie(random.nextInt(0, levelMap[0].length * 70), random.nextInt(0, levelMap.length * 70), this));
         }
     }
 
@@ -228,10 +228,16 @@ public class Character {
             zombie.draw(g, camera);
             if(isMovingFaster) {
                 isMovingFaster = false;
-                zombies[random.nextInt(zombies.length)].setSpeed(zSpeed);
+                zombie.setSpeed(zSpeed);
+                zombies.set(random.nextInt(zombies.size()), zombie);
+               // setNewZombie();
             }
 
         }
+    }
+
+    public void setNewZombie() {
+        zombies.add(new Zombie(random.nextInt(0, levelMap[0].length * 70), random.nextInt(0, levelMap.length * 70), this));
     }
 
     public boolean AABB(int x, int y) {
@@ -244,7 +250,7 @@ public class Character {
     }
     public void setSpeed () {
         isMovingFaster = true;
-        zSpeed++;
+        zSpeed = 2;
     }
 
     public void setY(int y) {

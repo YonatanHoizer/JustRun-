@@ -45,7 +45,7 @@ public class PlayScene extends Scene {
         tileManager = new TileManager();
         this.scene = 2;
 
-        remainingSeconds = 20;
+        remainingSeconds = 10;
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,7 +53,7 @@ public class PlayScene extends Scene {
                     remainingSeconds--;
                 } else {
                     level+= 1;
-                    remainingSeconds = 20;
+                    remainingSeconds = 10;
                     character.setSpeed();
                 }
             }
