@@ -56,28 +56,28 @@ public class Character {
 
         try {
             rightImages = new BufferedImage[]{
-                    ImageIO.read(getClass().getResource("res/imege R1.png")),
-                    ImageIO.read(getClass().getResource("res/imege R2.png")),
-                    ImageIO.read(getClass().getResource("res/imege R1.png")),
-                    ImageIO.read(getClass().getResource("res/imege R3.png")),
+                    ImageIO.read(getClass().getResource("res/characterR2.png")),
+                    ImageIO.read(getClass().getResource("res/characterR1.png")),
+                    ImageIO.read(getClass().getResource("res/characterR1.png")),
+                    ImageIO.read(getClass().getResource("res/characterR3.png")),
             };
             leftImages = new BufferedImage[]{
-                    ImageIO.read(getClass().getResource("res/imaga L1.png")),
-                    ImageIO.read(getClass().getResource("res/imaga L2.png")),
-                    ImageIO.read(getClass().getResource("res/imaga L1.png")),
-                    ImageIO.read(getClass().getResource("res/imaga L3.png")),
+                    ImageIO.read(getClass().getResource("res/characterL1.png")),
+                    ImageIO.read(getClass().getResource("res/characterL2.png")),
+                    ImageIO.read(getClass().getResource("res/characterL1.png")),
+                    ImageIO.read(getClass().getResource("res/characterL3.png")),
             };
             downImages = new BufferedImage[]{
-                    ImageIO.read(getClass().getResource("res/imaga D1.png")),
-                    ImageIO.read(getClass().getResource("res/imaga D2.png")),
-                    ImageIO.read(getClass().getResource("res/imaga D1.png")),
-                    ImageIO.read(getClass().getResource("res/imaga D3.png")),
+                    ImageIO.read(getClass().getResource("res/characterD1.png")),
+                    ImageIO.read(getClass().getResource("res/characterD2.png")),
+                    ImageIO.read(getClass().getResource("res/characterD1.png")),
+                    ImageIO.read(getClass().getResource("res/characterD3.png")),
             };
             upImages = new BufferedImage[]{
-                    ImageIO.read(getClass().getResource("res/image U1.png")),
-                    ImageIO.read(getClass().getResource("res/image U2.png")),
-                    ImageIO.read(getClass().getResource("res/image U1.png")),
-                    ImageIO.read(getClass().getResource("res/image U3.png")),
+                    ImageIO.read(getClass().getResource("res/characterU1.png")),
+                    ImageIO.read(getClass().getResource("res/characterU2.png")),
+                    ImageIO.read(getClass().getResource("res/characterU1.png")),
+                    ImageIO.read(getClass().getResource("res/characterU3.png")),
             };
 
             currentImage = rightImages[0];
@@ -224,12 +224,14 @@ public class Character {
         int drawY = y - (int) camera.position.y;
         g.drawImage(currentImage, drawX, drawY, CHARACTER_SIZE, CHARACTER_SIZE, null);
 
-        for (Zombie zombie : zombies) {
-            zombie.draw(g, camera);
+        for (int i =0; i < zombies.size(); ++i) {
+
+            zombies.get(i).draw(g, camera);
             if(isMovingFaster) {
                 isMovingFaster = false;
-                zombie.setSpeed(zSpeed);
-                zombies.set(random.nextInt(zombies.size()), zombie);
+                int rand = random.nextInt(zombies.size());
+                zombies.get(rand).setSpeed(zSpeed);
+                zombies.set(rand, zombies.get(rand));
                // setNewZombie();
             }
 
@@ -250,7 +252,7 @@ public class Character {
     }
     public void setSpeed () {
         isMovingFaster = true;
-        zSpeed = 2;
+        zSpeed += 1;
     }
 
     public void setY(int y) {

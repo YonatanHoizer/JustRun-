@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Zombie {
     private int x, y;
-    private int SPEED = 3;
+    private int SPEED = 2;
     private BufferedImage currentImage;
     private int imageIndex = 0;
     private BufferedImage[] rightImagesZ, leftImagesZ, downImagesZ, upImagesZ;
@@ -89,8 +89,9 @@ public class Zombie {
 
     public void setSpeed(int speed) {
         this.SPEED = speed;
-        System.out.println("THIS " + SPEED);
     }
+
+    public int getSPEED() {return SPEED;}
 
     private void updateImage() {
         switch (direction) {
@@ -113,5 +114,10 @@ public class Zombie {
                 charX + charSize - 25 > x &&
                 charY < y + ZOMBIE_SIZE-25 &&
                 charY + charSize - 25 > y;
+    }
+
+    @Override
+    public String toString() {
+        return "speed "+ SPEED;
     }
 }
