@@ -2,49 +2,100 @@ package Game.Frontend.states;
 
 import Game.Backend.Camera;
 import Game.Backend.CameraControls;
-import Game.Backend.Players.Player;
 import Game.Backend.TileManager;
+import Game.Backend.Players.Character;
+import Game.Utils.Constans;
+import Game.Utils.KeyHandler;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Random;
 
-public class PlayScene extends Scene{
-    private Player player;
-    private CameraControls cameraControls;
-    private final TileManager tileManager;
-    private final int [][] ints_map;
-    private int scene;
+public class PlayScene extends Scene {
+    private Character character;
     private Camera camera;
-    public PlayScene(Camera camera) {
+    private int scene;
+    private final int[][] levelMap;
+    private Random random = new Random();
+    private static final int TILE_SIZE = 70;
+    private TileManager tileManager;
+    private CameraControls cameraControls;
+    private KeyHandler key;
+
+    public PlayScene(Camera camera, KeyHandler key) {
         super(camera);
+        this.key = key;
+
+
+        levelMap = buildLevel();
+        character = new Character(Constans.WINDOW_WIDTH / 2, Constans.WINDOW_HEIGHT / 2, levelMap);
         this.camera = camera;
-
-
-        cameraControls = new CameraControls(camera);
+        cameraControls = new CameraControls(camera, character);
+        this.setFocusable(true);
+        this.requestFocus();
         tileManager = new TileManager();
-        ints_map = buildLevel();
-
-       this.scene = 2;
+        this.scene = 2;
     }
 
-   public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        //cameraControls.update();
+    private void processKey() {
+        if (key.isKeyPressed(KeyEvent.VK_UP)) {
+            character.moveUp(levelMap);
+        } else if (key.isKeyPressed(KeyEvent.VK_DOWN)) {
+            character.moveDown(levelMap);
+        } else if (key.isKeyPressed(KeyEvent.VK_LEFT)) {
+            character.moveLeft(levelMap);
+        } else if (key.isKeyPressed(KeyEvent.VK_RIGHT)) {
+            character.moveRight(levelMap);
+        }
+    }
 
-       for(int y =0; y < ints_map.length; ++y) {
-           for(int x =0 ; x < ints_map[y].length; ++x) {
-               int id = ints_map[y][x];
-               int drawX = (int)(x * 70 - camera.position.x);
-               int drawY = (int)(y * 70 - camera.position.y);
-               g.drawImage(tileManager.getImage(id), drawX, drawY, 100, 100, null);
-           }
-       }
+    @Override
+    public void update() {
+        processKey();
+        cameraControls.update(levelMap[0].length, levelMap.length);
+        if(character.AABB(character.getX(), character.getY())){
+            JOptionPane.showMessageDialog(null, "You Lose", "", JOptionPane.ERROR_MESSAGE);
+            this.scene = 1;
+        }
+    }
 
-   }
+    @Override
+    public void render(Graphics g) {
+        int screenWidth = Constans.WINDOW_WIDTH;
+        int screenHeight = Constans.WINDOW_HEIGHT;
+        int tilesX = screenWidth / TILE_SIZE + 2;
+        int tilesY = screenHeight / TILE_SIZE + 2;
 
+        int startX = (int) (camera.position.x / TILE_SIZE);
+        int startY = (int) (camera.position.y / TILE_SIZE);
 
-    public static int [][] buildLevel() {
-        int[][] level = new int[100][100];
+        for (int y = startY; y < startY + tilesY; y++) {
+            for (int x = startX; x < startX + tilesX; x++) {
+                if (x >= 0 && x < levelMap[0].length && y >= 0 && y < levelMap.length) {
+                    int id = levelMap[y][x];
+                    int drawX = x * TILE_SIZE - (int) camera.position.x;
+                    int drawY = y * TILE_SIZE - (int) camera.position.y;
+                    g.drawImage(tileManager.getImage(id), drawX, drawY, TILE_SIZE, TILE_SIZE, null);
+                }
+            }
+        }
+
+        character.draw(g, camera);
+    }
+
+    @Override
+    public void scene_type(int scene) {
+        this.scene = scene;
+    }
+
+    @Override
+    public int getScene() {
+        return scene;
+    }
+
+    public static int[][] buildLevel() {
+        int[][] level = new int[50][50];
         for (int y = 0; y < level.length; ++y) {
             for (int x = 0; x < level[0].length; ++x) {
                 if (y == 0 || y == level.length - 1) {
@@ -52,7 +103,7 @@ public class PlayScene extends Scene{
                 } else if (x == 0 || x == level.length - 1) {
                     level[y][x] = 1;
                 } else {
-                    level[y][x] = getRandomWeightedValue(new Random());
+                    level[y][x] = getRandomWeightedValue();
                 }
             }
         }
@@ -64,17 +115,8 @@ public class PlayScene extends Scene{
         return level;
     }
 
-    private static int getRandomWeightedValue(Random random) {
-        int[] weightedValues = {3 ,3,  3, 3, 3, 7};
-        return weightedValues[random.nextInt(weightedValues.length)];
-    }
-
-    @Override
-    public void scene_type(int scene) {
-        this.scene = scene;
-    }
-
-    public int getScene() {
-        return scene;
+    private static int getRandomWeightedValue() {
+        int[] weightedValues = {3, 3, 3, 3, 3, 7};
+        return weightedValues[new Random().nextInt(weightedValues.length)];
     }
 }

@@ -20,13 +20,9 @@ public class KeyHandler implements KeyListener {
         keyCodes[e.getKeyCode()] = true;
     }
 
-  //  public void setState(boolean state) {
-  //      this.inState = state;
-    //}
-
     @Override
     public void keyReleased(KeyEvent e) {
-       keyCodes[e.getKeyCode()] = false;
+        keyCodes[e.getKeyCode()] = false;
     }
 
     public boolean isKeyPressed(int key) {

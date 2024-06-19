@@ -56,9 +56,19 @@ public class EditorScene extends Scene {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void render(Graphics g) {
+
+    }
+
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-          cameraControls.update();
+          cameraControls.update(0, 0);
 //        grid.render(g);
 
 
@@ -105,7 +115,7 @@ public class EditorScene extends Scene {
 
     // second option to build editor scene
     public static int [][] buildLevel() {
-        int[][] level = new int[100][100];
+        int[][] level = new int[50][50];
             for (int y = 0; y < level.length; ++y) {
                 for (int x = 0; x < level[0].length; ++x) {
                     if (y == 0 || y == level.length - 1) {

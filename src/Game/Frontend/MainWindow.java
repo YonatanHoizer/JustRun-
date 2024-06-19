@@ -8,24 +8,23 @@ import Game.Utils.Vector2f;
 import Game.Frontend.states.*;
 
 import javax.swing.*;
-import java.awt.image.BufferedImage;
+import java.awt.*;
+import java.awt.image.BufferStrategy;
 
 public class MainWindow implements Runnable {
     private Scene panel;
     private JFrame frame;
-    private final KeyHandler key;
     private final MoseHandler mouse;
     private boolean gameLoopIsRunning;
     private int currentScene;
-    private BufferedImage image = new BufferedImage(Constans.WINDOW_WIDTH, Constans.WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
+    private KeyHandler key;
 
     public MainWindow() {
-        key = new KeyHandler();
         mouse = new MoseHandler();
+        key = new KeyHandler();
         gameLoopIsRunning = true;
-        // Changing the states
         setUpWindow();
-        currentScene = - 1;
+        currentScene = -1;
         changeState(1);
 
         frame.setVisible(true);
@@ -34,73 +33,71 @@ public class MainWindow implements Runnable {
     private void changeState(int state) {
         if (currentScene != state) {
             this.currentScene = state;
+            frame.getContentPane().removeAll();
             switch (currentScene) {
-                case 0:
-                    panel = new EditorScene(new Camera(new Vector2f()), mouse);
-                    frame.getContentPane().removeAll();
-                    break;
-                case 1:
-                    panel = new MenuScene(new Camera(new Vector2f()), mouse);
-                    frame.getContentPane().removeAll();
-                    break;
-                case 2:
-                    panel = new PlayScene(new Camera(new Vector2f()));
-                    frame.getContentPane().removeAll();
-                    break;
-                default:
+                case 0 -> panel = new EditorScene(new Camera(new Vector2f()), mouse);
+                case 1 -> panel = new MenuScene(new Camera(new Vector2f()), mouse);
+                case 2 -> panel = new PlayScene(new Camera(new Vector2f()), key);
+                default -> {
                     System.out.println("Unknown state: " + state);
                     return;
+                }
             }
-            frame.add(panel);
+            frame.getContentPane().add(panel);
+            frame.getContentPane().revalidate();
+            frame.getContentPane().repaint();
         }
     }
 
     private void setUpWindow() {
-        frame = new JFrame(); // Use the class field
+        frame = new JFrame();
         frame.setTitle("Just-Run-");
         frame.setSize(Constans.WINDOW_WIDTH, Constans.WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
+
         frame.addKeyListener(key);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(mouse);
         frame.setFocusable(true);
+
+
     }
 
     @Override
     public void run() {
-        long lastTime = System.nanoTime();
-        long timer = System.currentTimeMillis();
-        final double ns = 1000000000.0 / 60.0;
-        double delta = 0;
-        int frames = 0;
-        int updates = 0;
         while (gameLoopIsRunning) {
-            long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            lastTime = now;
-            while (delta >= 1) {
-                update();
-                updates++;
-                delta--;
+            update();
+            render();
+            try {
+                Thread.sleep(1000 / 60);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            frames++;
-
-            if(System.currentTimeMillis() - timer > 1000) {
-                timer += 1000;
-                updates = 0;
-                frames = 0;
-            }
-
         }
+
+        // Release resources
+        frame.dispose();
     }
 
     private void update() {
-        changeState(panel.getScene()); // Use the current scene directly
-        frame.revalidate();
-        frame.repaint();
+        changeState(panel.getScene());
+        panel.update();
     }
 
+    private void render() {
+        BufferStrategy bs = frame.getBufferStrategy();
+        if (bs == null) {
+            frame.createBufferStrategy(3);
+            return;
+        }
 
+        Graphics g = bs.getDrawGraphics();
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, Constans.WINDOW_WIDTH, Constans.WINDOW_HEIGHT);
+        panel.render(g);
+        g.dispose();
+        bs.show();
+    }
 }

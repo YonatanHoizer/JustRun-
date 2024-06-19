@@ -37,17 +37,17 @@ public class Animation implements ActionListener {
     }
 
     public void draw(Graphics g) {
-        for(BloodDrop b :  bloodDrops) {
+        List<BloodDrop> copy = new ArrayList<>(bloodDrops);
+        for(BloodDrop b : copy) {
             b.draw(g);
         }
-
 
     }
 
     private class BloodDrop {
-        private int x;
+        private final int x;
         private int y;
-        private int speed;
+        private final int speed;
 
         public BloodDrop(int x, int y) {
             this.x = x;
@@ -60,12 +60,12 @@ public class Animation implements ActionListener {
         }
 
         public void update() {
-            y += speed; жение капли
+            y += speed;
         }
 
         public void draw(Graphics g) {
             g.setColor(Color.RED);
-            g.fillOval(x, y, 5, 5);  �
+            g.fillOval(x, y, 5, 5);
         }
     }
 

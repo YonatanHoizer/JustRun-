@@ -15,7 +15,7 @@ public class GameSceneManager {
 
 
     public void renderScene(Graphics g) {
-        this.gameScene.paintComponent(g);
+       // this.gameScene.paintComponent(g);
     }
 
 

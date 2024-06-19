@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class Scene extends JPanel {
-    ;
     private BoardMap ground;
     private GameSceneManager manager;
     private Camera camera;
@@ -21,14 +20,13 @@ public abstract class Scene extends JPanel {
         //JOptionPane.showMessageDialog(null,"message", "", JOptionPane.QUESTION_MESSAGE);
     }
 
+    public abstract void update();
 
+    public  void render(Graphics g) {
 
-
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-       // manager.renderState(g);
-        //repaint();
     }
+
+    public void paintComponent(Graphics g) {}
 
     public abstract void scene_type(int scene);
 

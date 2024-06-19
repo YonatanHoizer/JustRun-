@@ -1,32 +1,25 @@
-class camera {
-    public int offsetX = 400;
-    public int offsetY = 400;
-    private character character;
+package Game.Backend;
 
-    public camera(character c) {
-        this.character = c;
+import Game.Backend.Players.Character;
+import Game.Utils.Constans;
+import Game.Utils.Vector2f;
+
+public class Camera {
+    private Character character;
+    public Vector2f position;
+
+    public Camera(Vector2f position, Character character) {
+        this.position = position;
+        this.character = character;
     }
 
-    public void update() {
-        if (character.isMovingL) {
-            offsetX += 10;
-        }
-        if (character.isMovingR) {
-            offsetX -= 10;
-        }
-        if (character.isMovingU) {
-            offsetY += 10;
-        }
-        if (character.isMovingD) {
-            offsetY -= 10;
-        }
+    public Camera(Vector2f position) {
+        this.position = position;
     }
 
-    public int getCameraX(int worldX) {
-        return worldX + offsetX;
+    public void update(int charX, int charY) {
+        position.x = charX - (float)Constans.WINDOW_WIDTH / 2;
+        position.y = charY - (float)Constans.WINDOW_HEIGHT / 2;
     }
 
-    public int getCameraY(int worldY) {
-        return worldY + offsetY;
-    }
 }
