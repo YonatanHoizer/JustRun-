@@ -75,20 +75,55 @@ public class PlayScene extends Scene {
         }
     }
 
-    @Override
     public void update() {
         info.setScore(character.getScore());
         info.setLevel(level);
         cameraControls.update(levelMap[0].length, levelMap.length);
-        if(character.AABB(character.getX(), character.getY())){
-            JOptionPane.showMessageDialog(null, "You Lose", "", JOptionPane.ERROR_MESSAGE);
+
+        if (character.AABB(character.getX(), character.getY())) {
+            showCustomDialog("You Lose :/", Color.RED);
             this.scene = 1;
         } else if (character.getScore() == 60) {
-            JOptionPane.showMessageDialog(null, "You Win", "", JOptionPane.INFORMATION_MESSAGE);
+            showCustomDialog("You Win :)", Color.GREEN);
             this.scene = 1;
         }
+
         processKey();
     }
+    private void showCustomDialog(String message, Color backgroundColor) {
+        JDialog dialog = new JDialog((Frame) null, message, true);
+        dialog.setSize(300, 150);
+        dialog.setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                drawGlowingText((Graphics2D) g, message, getWidth() / 2, getHeight() / 2);
+            }
+        };
+        panel.setBackground(backgroundColor);
+        panel.setLayout(new BorderLayout());
+
+        dialog.add(panel);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
+    }
+
+    private void drawGlowingText(Graphics2D g2d, String text, int x, int y) {
+        Font font = new Font("Arial", Font.BOLD, 36);
+        g2d.setFont(font);
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        for (int i = 5; i > 0; i--) {
+            g2d.setColor(new Color(255, 255, 255, 20 * i));
+            g2d.drawString(text, x - g2d.getFontMetrics().stringWidth(text) / 2, y - g2d.getFontMetrics().getAscent() / 2 + i + 30);
+        }
+
+        g2d.setColor(Color.black);
+        g2d.drawString(text, x - g2d.getFontMetrics().stringWidth(text) / 2 , y - g2d.getFontMetrics().getAscent() / 2 + 30);
+    }
+
 
     @Override
     public void render(Graphics g) {
@@ -112,8 +147,7 @@ public class PlayScene extends Scene {
         }
 
         character.draw(g, camera);
-
-        // Draw the countdown timer
+        // timer
         g.setColor(Color.RED);
         g.setFont(new Font("MV Boli", Font.PLAIN, 40));
         g.drawString("Level-Up: " + remainingSeconds, Constans.WINDOW_WIDTH/2 - 100/2, 70);

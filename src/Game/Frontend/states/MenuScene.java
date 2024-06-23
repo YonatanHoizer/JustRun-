@@ -10,7 +10,6 @@ import java.awt.*;
 public class MenuScene extends Scene {
     private MoseHandler mouse;
     private int scene;
-
     private JLabel label;
     private JButton button;
     private JButton buttonStartGame;
@@ -51,9 +50,9 @@ public class MenuScene extends Scene {
 
     private JLabel createLogo() {
         JLabel logo = new JLabel();
-        ImageIcon icon = new ImageIcon("Logo.jpg");
+        ImageIcon icon = new ImageIcon("zombie Logo3.jpg");
         logo.setIcon(icon);
-        logo.setBounds(Constans.WINDOW_WIDTH / 2 - 400 / 2, 50, 400, 200);
+        logo.setBounds(Constans.WINDOW_WIDTH / 2 - 220, 50, 500, 250);
         logo.setVisible(true);
         return logo;
     }
@@ -72,11 +71,11 @@ public class MenuScene extends Scene {
     }
 
     private JButton createStartButton() {
-        JButton start = new JButton("Start");
+        GlowingButton start = new GlowingButton("Start game");
         start.setBounds(Constans.WINDOW_WIDTH / 2 - 200 / 2, 300, 200, 50);
         start.setFocusable(false);
-        start.setBackground(Color.BLACK);
-        start.setForeground(Color.BLUE);
+        start.setBackground(Color.black);
+        start.setForeground(Color.red);
         start.addActionListener((e) -> {
             this.button.setVisible(!this.button.isVisible());
             this.buttonStartGame.setVisible(false);
@@ -88,16 +87,11 @@ public class MenuScene extends Scene {
         return start;
     }
 
-    private void startGame() {
-        this.scene = 2;
-        repaint();
-    }
-
     private JButton createRulesButton() {
-        JButton button = new JButton();
-        button.setText("?");
-        button.setBackground(Color.BLACK);
-        button.setForeground(Color.BLUE);
+        GlowingButton button = new GlowingButton("game explanation");
+        button.setText("game explanation");
+        button.setBackground(Color.black);
+        button.setForeground(Color.red);
         button.setBounds(Constans.WINDOW_WIDTH / 2 - 200 / 2, 400, 200, 50);
         button.setFocusable(false);
         button.addActionListener((e) -> label.setVisible(!label.isVisible()));
@@ -107,6 +101,11 @@ public class MenuScene extends Scene {
         });
         button.setVisible(true);
         return button;
+    }
+
+    private void startGame() {
+        this.scene = 2;
+        repaint();
     }
 
     private String rules() {
@@ -130,7 +129,6 @@ public class MenuScene extends Scene {
 
     @Override
     public void update() {
-
     }
 
     @Override

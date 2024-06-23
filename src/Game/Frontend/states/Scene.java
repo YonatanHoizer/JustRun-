@@ -14,10 +14,6 @@ public abstract class Scene extends JPanel {
     protected Scene(Camera camera) {
         this.camera = camera;
         this.setBackground(Color.BLACK);
-        //manager = new GameSceneManager(new MoseHandler());
-
-
-        //JOptionPane.showMessageDialog(null,"message", "", JOptionPane.QUESTION_MESSAGE);
     }
 
     public abstract void update();

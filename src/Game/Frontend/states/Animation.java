@@ -52,7 +52,7 @@ public class Animation implements ActionListener {
         public BloodDrop(int x, int y) {
             this.x = x;
             this.y = y;
-            this.speed = random.nextInt(5) + 1;
+            this.speed = random.nextInt(4,7) ;
         }
 
         public int getY() {
@@ -65,7 +65,7 @@ public class Animation implements ActionListener {
 
         public void draw(Graphics g) {
             g.setColor(Color.RED);
-            g.fillOval(x, y, 5, 5);
+            g.fillOval(x, y, 8, 8);
         }
     }
 

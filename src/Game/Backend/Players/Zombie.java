@@ -69,19 +69,20 @@ public class Zombie {
     private void updatePosition() {
         int targetX = character.getX();
         int targetY = character.getY();
-
         if (x > targetX) {
             x -= SPEED;
             direction = Direction.LEFT;
-        } else {
+        }
+        if (x < targetX) {
             x += SPEED;
             direction = Direction.RIGHT;
         }
 
-        if (y >= targetY) {
+        if (y > targetY) {
             y -= SPEED;
             direction = Direction.UP;
-        } else {
+        }
+        if (y < targetY) {
             y += SPEED;
             direction = Direction.DOWN;
         }

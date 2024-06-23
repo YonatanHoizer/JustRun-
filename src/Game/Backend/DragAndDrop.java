@@ -25,7 +25,6 @@ public class DragAndDrop {
 
     public void update() {
         if (this.image != null) {
-            // Рассчитываем позицию для выравнивания на сетке
             int gridSize = 100;
             float dx = (float) Math.floor((mouse.x + mouse.dx + camera.position.x) / gridSize) * gridSize;
             float dy = (float) Math.floor((mouse.y + mouse.dy + camera.position.y) / gridSize) * gridSize;

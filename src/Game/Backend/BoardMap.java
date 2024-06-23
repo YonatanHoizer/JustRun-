@@ -32,7 +32,6 @@ public class BoardMap {
         this.file = file;
         try {
             tile = ImageIO.read(getClass().getResource(file));
-            // TODO: don't using this wired
             tileWidth = tile.getWidth();
             tileHeight = tile.getHeight();
 

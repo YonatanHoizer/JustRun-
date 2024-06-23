@@ -12,12 +12,4 @@ public class GameSceneManager {
         this.gameScene = scene;
         this.mouse = mouse;
     }
-
-
-    public void renderScene(Graphics g) {
-       // this.gameScene.paintComponent(g);
-    }
-
-
-
 }
